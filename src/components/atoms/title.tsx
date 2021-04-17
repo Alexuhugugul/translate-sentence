@@ -1,5 +1,5 @@
 type TTitleProps = {
-    children?: string
+    children?: string | Array<string>
 }
 
 const Title = (props: TTitleProps) => {

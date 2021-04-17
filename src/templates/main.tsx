@@ -3,6 +3,7 @@ import Header from "../components/organisms/header";
 import StringForTranslation from "../components/organisms/stringForTranslation";
 import WordsForTranslation from "../components/organisms/wordsForTranslation";
 import WordsList from "../components/molecules/wordsList";
+import SubmitButton from "../components/molecules/submitButton";
 import Title from "../components/atoms/title";
 import Image from "../components/atoms/image";
 import Word from "../components/atoms/word";
@@ -27,13 +28,15 @@ type TMainPageProps = {
     handlers: TWordhandlers
     availableWords: Array<TWord>
     selectedWords: Array<TWord>
+    checkResult: Function
+    translationText:string
 }
 const mainPage = (props: TMainPageProps) => {
-    const { image, handlers, availableWords, selectedWords } = props
+    const { image, handlers, availableWords, selectedWords, checkResult,translationText } = props
     return (
         <Fragment>
             <Header>
-                <Title>Переведите данное предложение:</Title>
+                <Title>Переведите данное предложение:{translationText}</Title>
             </Header>
             <main className="main-page__body">
                 <StringForTranslation
@@ -69,6 +72,7 @@ const mainPage = (props: TMainPageProps) => {
                         )}
                     </WordsList>
                 </WordsForTranslation>
+                <SubmitButton checkResult={checkResult} />
             </main>
         </Fragment>
     )
