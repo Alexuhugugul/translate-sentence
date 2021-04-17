@@ -9,7 +9,7 @@ const MainPage = () => {
         text: string,
         translation: string
     }
-    const [words, setWords] = useState([
+    const [words, setWords] = useState<TWord[]>([
         { id: 1, order: 1, text: "Create", translation: "Создавать" },
         { id: 2, order: 2, text: "interactive", translation: "интерактивные" },
         { id: 3, order: 3, text: "user", translation: "пользовательские" },
@@ -33,7 +33,7 @@ const MainPage = () => {
     }
     function dragHandler(e: React.DragEvent<HTMLDivElement>, word: TWord) {
         e.preventDefault()
-        console.log(e.currentTarget.parentElement)
+        console.log('asd',e.currentTarget.parentElement)
         if (e.currentTarget.parentElement?.className === "string-for-translation__list") {
             const currentIndex = board.indexOf(word)
             board.splice(currentIndex, 1)
@@ -88,7 +88,7 @@ const MainPage = () => {
         return a.order - b.order
 
     }
-    const refBoard = useRef(null)
+
     return (
         <div className="main-page"
             onDragOver={(event) => dragOverHandler(event)}
@@ -96,10 +96,9 @@ const MainPage = () => {
         >
             <Main
                 image={image}
-                words={words}
+                availableWords={words}
                 handlers={handlers}
-                refBoard={refBoard}
-                board={board} />
+                selectedWords={board} />
         </div>
     )
 }

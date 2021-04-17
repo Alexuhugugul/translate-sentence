@@ -8,9 +8,7 @@ type TImageProps = {
 const image = (props: TImageProps) => {
     const { image } = props
     return (
-        <Fragment>
             <img className="image" src={image}/>
-        </Fragment>
     )
 }
 

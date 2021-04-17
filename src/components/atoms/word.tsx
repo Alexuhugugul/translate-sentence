@@ -1,12 +1,9 @@
-import React from 'react';
-
-export type TWord = {
+type TWord = {
     id: number
     order: number
     text: string
     translation: string
 }
-
 
 type TWordhandlers = {
     dragStartHandler: Function
@@ -21,22 +18,22 @@ type TWordProps = {
     handlers: TWordhandlers
 }
 
-
 const Word = (props: TWordProps) => {
-    const { word, handlers: { dragStartHandler,
+
+    const { word, handlers } = props;
+    const { dragStartHandler,
         dragOverHandler,
         dragHandler,
         dragEndHandler,
-        dragLeaveHandler } } = props
+        dragLeaveHandler } = handlers;
 
     return (
         <div
             onDragStart={(event) => dragStartHandler(event)}
             onDragLeave={(event) => dragLeaveHandler(event)}
-            // onDragEnd={(event) => dragEndHandler(event)}
             onDragOver={(event) => dragOverHandler(event)}
-            onDrag={(event) => dragHandler(event,word)}
-            onDrop={(event) => dragEndHandler(event,word)}
+            onDrag={(event) => dragHandler(event, word)}
+            onDrop={(event) => dragEndHandler(event, word)}
             draggable={true}
             className="words-for-translation__word">
             {word.text}

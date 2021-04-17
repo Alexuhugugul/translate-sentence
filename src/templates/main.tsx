@@ -1,7 +1,11 @@
 import React, { Fragment } from 'react';
-import Header from "../organisms/header";
-import StringForTranslation from "../organisms/stringForTranslation";
-import WordsForTranslation from "../organisms/wordsForTranslation";
+import Header from "../components/organisms/header";
+import StringForTranslation from "../components/organisms/stringForTranslation";
+import WordsForTranslation from "../components/organisms/wordsForTranslation";
+import WordsList from "../components/molecules/wordsList";
+import Title from "../components/atoms/title";
+import Image from "../components/atoms/image";
+import Word from "../components/atoms/word";
 
 type TWord = {
     id: number,
@@ -9,6 +13,7 @@ type TWord = {
     text: string,
     translation: string
 }
+
 type TWordhandlers = {
     dragStartHandler: Function
     dragOverHandler: Function
@@ -19,22 +24,51 @@ type TWordhandlers = {
 
 type TMainPageProps = {
     image: string
-    words: Array<TWord>
-    handlers:TWordhandlers
-    refBoard:any
-    board:any
+    handlers: TWordhandlers
+    availableWords: Array<TWord>
+    selectedWords: Array<TWord>
 }
-
 const mainPage = (props: TMainPageProps) => {
-    const { image, words,handlers,refBoard,board } = props
+    const { image, handlers, availableWords, selectedWords } = props
     return (
         <Fragment>
-            <header className="main-page__header">
-                <Header />
-            </header>
+            <Header>
+                <Title>Переведите данное предложение:</Title>
+            </Header>
             <main className="main-page__body">
-                <StringForTranslation image={image} handlers={handlers} refBoard={refBoard} board={board}/>
-                <WordsForTranslation handlers={handlers} words={words} />
+                <StringForTranslation
+                    imageComponent={
+                        <Image image={image} />
+                    }
+                >
+                    <WordsList
+                        className="string-for-translation__list"
+                        handlers={handlers}
+                    >
+                        {selectedWords.map((selectedWord: TWord) =>
+                            <Word
+                                key={selectedWord.id}
+                                handlers={handlers}
+                                word={selectedWord}
+                            />
+                        )}
+                    </WordsList>
+                </StringForTranslation>
+
+                <WordsForTranslation>
+                    <WordsList
+                        className="words-for-translation__words"
+                        handlers={handlers}
+                    >
+                        {availableWords.map((availableWord: TWord) =>
+                            <Word
+                                key={availableWord.id}
+                                handlers={handlers}
+                                word={availableWord}
+                            />
+                        )}
+                    </WordsList>
+                </WordsForTranslation>
             </main>
         </Fragment>
     )
