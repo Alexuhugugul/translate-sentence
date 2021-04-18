@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import styled from "styled-components";
 
 type TWord = {
     id: number
@@ -20,6 +21,14 @@ type TWordProps = {
     handlers: TWordhandlers
 }
 
+const WordWrapper = styled.div`
+border: 1px solid black;
+padding: 3px;
+border-radius: 5px;
+cursor: grab;
+margin:5px;
+`;
+
 const Word = forwardRef((props: TWordProps, ref) => {
 
     const { word, handlers } = props;
@@ -30,7 +39,7 @@ const Word = forwardRef((props: TWordProps, ref) => {
         dragLeaveHandler } = handlers;
 
     return (
-        <div
+        <WordWrapper
             // @ts-ignore
             ref={ref}
             onDragStart={(event) => dragStartHandler(event, word)}
@@ -41,7 +50,7 @@ const Word = forwardRef((props: TWordProps, ref) => {
             draggable={true}
             className="words-for-translation__word">
             {word.text}
-        </div>
+        </WordWrapper>
     )
 })
 

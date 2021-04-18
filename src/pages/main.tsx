@@ -76,9 +76,9 @@ const MainPage = () => {
         const isWord = e.currentTarget.className === "words-for-translation__word";
         if (isStringForTranslation && currentWord) {
 
-                setSelectedWord([...selectedWords, currentWord]);
-                setCurrentWord(null);
-        
+            setSelectedWord([...selectedWords, currentWord]);
+            setCurrentWord(null);
+
 
         } else
             if (isWordsForTranslation && currentWord) {
@@ -155,7 +155,8 @@ const MainPage = () => {
     }
 
     return (
-        <div className="main-page"
+        <div
+            className="main-page"
             onDragOver={(event) => dragOverHandler(event)}
             onDrop={(event) => dragEndHandler(event)}
         >

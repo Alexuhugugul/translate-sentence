@@ -7,6 +7,7 @@ import SubmitButton from "../components/molecules/submitButton";
 import Title from "../components/atoms/title";
 import Image from "../components/atoms/image";
 import Word from "../components/atoms/word";
+import styled from "styled-components";
 
 
 type TWord = {
@@ -33,7 +34,12 @@ type TMainPageProps = {
     translationText: string
     refTextError: React.RefObject<HTMLDivElement> 
 }
-
+const Main = styled.main`
+height: 90%;
+display: flex;
+justify-content: space-between;
+flex-direction: column;
+`;
 const mainPage = (props: TMainPageProps) => {
     const { image, handlers, availableWords, selectedWords, checkResult, translationText, refTextError } = props
     return (
@@ -41,7 +47,7 @@ const mainPage = (props: TMainPageProps) => {
             <Header>
                 <Title>Переведите данное предложение:{translationText}</Title>
             </Header>
-            <main className="main-page__body">
+            <Main className="main-page__body">
                 <StringForTranslation
                     imageComponent={
                         <Image image={image} />
@@ -78,7 +84,7 @@ const mainPage = (props: TMainPageProps) => {
                     </WordsList>
                 </WordsForTranslation>
                 <SubmitButton refTextError={refTextError} checkResult={checkResult} />
-            </main>
+            </Main>
         </Fragment>
     )
 }

@@ -1,5 +1,4 @@
 import FlipMove from "react-flip-move";
-
 type TWordsListProps = {
     children?: JSX.Element[]
     className?: string

@@ -1,19 +1,24 @@
 import Button from "../atoms/button";
 import Validation from "../atoms/validation";
+import styled from "styled-components";
 
 type TSubmitFrom = {
     checkResult: Function
-    refTextError:React.RefObject<HTMLDivElement> 
+    refTextError: React.RefObject<HTMLDivElement>
 }
+
+const ButtonBlock = styled.div`
+margin-bottom: 20%;
+`;
 
 const SubmitButton = (props: TSubmitFrom) => {
     const { checkResult, refTextError } = props;
 
     return (
-        <div className="submit-button">
+        <ButtonBlock>
             <Button checkResult={checkResult} />
             <Validation refTextError={refTextError} />
-        </div>
+        </ButtonBlock>
     )
 }
 
