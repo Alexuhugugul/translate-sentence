@@ -39,7 +39,7 @@ const mainPage = (props: TMainPageProps) => {
     return (
         <Fragment>
             <Header>
-                <Title>Переведите данное предложение:{translationText}</Title>
+                <Title>Переведите данное предложение:<br/>{translationText}</Title>
             </Header>
             <main className="main-page__body">
                 <StringForTranslation

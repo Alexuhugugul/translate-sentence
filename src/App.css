@@ -83,6 +83,11 @@ flip-string-for-translation__list {
 }
 .submit-button {
   margin-bottom: 20%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .submit-button__validation span {
   color: red;

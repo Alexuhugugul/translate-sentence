@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Main from "../templates/main"
 import image from "../assets/speak.png";
-import debounce from "../utils/debounce"
 // @ts-ignore
 import 'talkify-tts';
 
@@ -26,28 +25,21 @@ const MainPage = () => {
     const [availableWords, setAvailableWord] = useState<TWord[]>([...controlBoard].sort(sortWords));
     const [selectedWords, setSelectedWord] = useState<TWord[]>([]);
     const [currentWord, setCurrentWord] = useState<TWord | null>(null);
+    const [fromField, detFromField] = useState<any>()
     const refTextError = useRef<HTMLDivElement>(null);
 
     function dragStartHandler(e: React.DragEvent<HTMLDivElement>, word: TWord) {
         const isFlipStringForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation";
         const isFlipWordsForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-words-for-translation";
 
-        setCurrentWord(word);
         if (isFlipStringForTranslation) {
-            const currentIndex = selectedWords.indexOf(word);
-            const newSelectedWords = [...selectedWords];
-            newSelectedWords.splice(currentIndex, 1);
-            setSelectedWord(newSelectedWords);
+            detFromField("isFlipStringForTranslation")
         }
-
         if (isFlipWordsForTranslation) {
-            // console.log('start',availableWords)
-            const currentIndex = availableWords.indexOf(word);
-            const newAvailableWords = [...availableWords];
-            newAvailableWords.splice(currentIndex, 1);
-            setAvailableWord(newAvailableWords);
-        }
+            detFromField("isFlipWordsForTranslation")
 
+        }
+        setCurrentWord(word);
     }
 
     function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
@@ -62,60 +54,74 @@ const MainPage = () => {
         if (refTextError.current) {
             refTextError.current.style.opacity = "0"
         }
-      
+
     }
 
     function dragEndHandler(e: React.DragEvent<HTMLDivElement>, word?: TWord) {
         e.preventDefault();
         e.stopPropagation();
         e.currentTarget.style.boxShadow = "none";
-        
+
+        if (!currentWord) {
+            return
+        }
+
         const isStringForTranslation = e.currentTarget.dataset.field === "string-for-translation";
         const isWordsForTranslation = e.currentTarget.dataset.field === "words-for-translation";
-        const isWord = e.currentTarget.className === "words-for-translation__word";
         const isFlipStringForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation";
-        if (isStringForTranslation && currentWord) {
-            
-            setSelectedWord([...selectedWords, currentWord]);
-            setCurrentWord(null);
-            
-            
-        } else
-        if (isWordsForTranslation && currentWord) {
-            
+        const newSelectedWords = [...selectedWords];
+        const newAvailableWords = [...availableWords];
+        const currentSelcetedWordIndex = selectedWords.indexOf(currentWord);
+        const currentAvailableWordIndex = availableWords.indexOf(currentWord);
+
+
+        if (fromField === "isFlipStringForTranslation" && isWordsForTranslation) {
+
+            newSelectedWords.splice(currentSelcetedWordIndex, 1);
+            setSelectedWord(newSelectedWords);
             setAvailableWord([...availableWords, currentWord]);
+
             setTimeout(() => {
                 setAvailableWord([...availableWords, currentWord].sort(sortWords));
                 setCurrentWord(null);
             }, 300);
-            
-        } else
-        if (isWord && currentWord && word && isFlipStringForTranslation) {
-            const currentIndex = selectedWords.indexOf(word);
-            const newSelectedWords = [...selectedWords]
-            setTimeout(() => {
-                newSelectedWords.splice(currentIndex, 0, currentWord)
-                setSelectedWord(newSelectedWords)
-                setCurrentWord(null);
-            }, 300)
-            
-        } else {
-            if (currentWord) {
-                setAvailableWord([...availableWords, currentWord].sort(sortWords));
-                setTimeout(() => {
-                    setAvailableWord([...availableWords, currentWord].sort(sortWords));
-                    setCurrentWord(null);
-                }, 300)
-            }else{
 
-                console.log('qweq')
-            }
         }
+        else
+            if (fromField === "isFlipWordsForTranslation" && isStringForTranslation) {
+
+                newAvailableWords.splice(currentAvailableWordIndex, 1);
+                setAvailableWord(newAvailableWords);
+                setSelectedWord([...selectedWords, currentWord]);
+                setCurrentWord(null);
+
+            }
+            else
+                if (isFlipStringForTranslation && word && fromField === "isFlipStringForTranslation") {
+
+                    const wordIndex = selectedWords.indexOf(word);
+
+                    newSelectedWords.splice(currentSelcetedWordIndex, 1);
+                    newSelectedWords.splice(wordIndex, 0, currentWord);
+                    setSelectedWord(newSelectedWords);
+
+                }
+                else
+                    if (isFlipStringForTranslation && word && fromField === "isFlipWordsForTranslation") {
+
+                        const wordIndex = selectedWords.indexOf(word);
+
+                        newAvailableWords.splice(currentAvailableWordIndex, 1);
+                        newSelectedWords.splice(wordIndex, 0, currentWord);
+                        setAvailableWord(newAvailableWords);
+                        setSelectedWord(newSelectedWords);
+                    }
+
     }
     function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>) {
         e.currentTarget.style.boxShadow = "none"
     }
-    
+
     function sortWords(a: TWord, b: TWord) {
         return a.order - b.order
     }
@@ -134,6 +140,8 @@ const MainPage = () => {
             window.talkify.config.remoteService.host = 'https://talkify.net';
             // @ts-ignore
             window.talkify.config.remoteService.apiKey = 'd9929a37-d3c5-40a8-8d72-db51b8beb64c';
+            // @ts-ignore
+            window.talkify.config.ui.audioControls.enabled = false;
             // @ts-ignore
             const player = new window.talkify.TtsPlayer();
             const textForVoice = sortControlBoard.map(word => word.text).join(" ");
