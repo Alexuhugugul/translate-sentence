@@ -1,5 +1,3 @@
-import React, { Fragment } from 'react';
-
 type TImageProps = {
     image: string,
 }
@@ -8,7 +6,7 @@ type TImageProps = {
 const image = (props: TImageProps) => {
     const { image } = props
     return (
-            <img className="image" src={image}/>
+        <img className="image" src={image} alt="speak"/>
     )
 }
 
