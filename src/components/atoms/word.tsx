@@ -1,4 +1,6 @@
 import { forwardRef } from "react";
+import styled from "styled-components";
+import debounce from "../../utils/debounce"
 
 type TWord = {
     id: number
@@ -20,6 +22,14 @@ type TWordProps = {
     handlers: TWordhandlers
 }
 
+const WordWrapper = styled.div`
+border: 1px solid black;
+padding: 3px;
+border-radius: 5px;
+cursor: grab;
+margin:5px;
+`;
+
 const Word = forwardRef((props: TWordProps, ref) => {
 
     const { word, handlers } = props;
@@ -30,18 +40,18 @@ const Word = forwardRef((props: TWordProps, ref) => {
         dragLeaveHandler } = handlers;
 
     return (
-        <div
+        <WordWrapper
             // @ts-ignore
             ref={ref}
-            onDragStart={(event) => dragStartHandler(event, word)}
-            onDragLeave={(event) => dragLeaveHandler(event)}
-            onDragOver={(event) => dragOverHandler(event)}
-            onDrag={(event) => dragHandler(event, word)}
-            onDrop={(event) => dragEndHandler(event, word)}
+            onDragStart={(event) =>debounce( dragStartHandler(event, word),1000)}
+            onDragLeave={(event) =>debounce( dragLeaveHandler(event),1000)}
+            onDragOver={(event) =>debounce( dragOverHandler(event),1000)}
+            onDrag={(event) =>debounce( dragHandler(event, word),1000)}
+            onDrop={(event) =>debounce( dragEndHandler(event, word),1000)}
             draggable={true}
             className="words-for-translation__word">
             {word.text}
-        </div>
+        </WordWrapper>
     )
 })
 

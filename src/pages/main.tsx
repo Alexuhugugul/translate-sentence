@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Main from "../templates/main"
 import image from "../assets/speak.png";
+import debounce from "../utils/debounce"
 // @ts-ignore
 import 'talkify-tts';
 
@@ -31,20 +32,20 @@ const MainPage = () => {
         const isFlipStringForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation";
         const isFlipWordsForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-words-for-translation";
 
+        setCurrentWord(word);
         if (isFlipStringForTranslation) {
             const currentIndex = selectedWords.indexOf(word);
             const newSelectedWords = [...selectedWords];
             newSelectedWords.splice(currentIndex, 1);
             setSelectedWord(newSelectedWords);
-            setCurrentWord(word);
         }
 
         if (isFlipWordsForTranslation) {
+            // console.log('start',availableWords)
             const currentIndex = availableWords.indexOf(word);
             const newAvailableWords = [...availableWords];
             newAvailableWords.splice(currentIndex, 1);
             setAvailableWord(newAvailableWords);
-            setCurrentWord(word);
         }
 
     }
@@ -61,61 +62,60 @@ const MainPage = () => {
         if (refTextError.current) {
             refTextError.current.style.opacity = "0"
         }
-        if (currentWord) {
-            return
-        }
+      
     }
 
     function dragEndHandler(e: React.DragEvent<HTMLDivElement>, word?: TWord) {
         e.preventDefault();
         e.stopPropagation();
-        e.currentTarget.style.boxShadow = "none"
-
+        e.currentTarget.style.boxShadow = "none";
+        
         const isStringForTranslation = e.currentTarget.dataset.field === "string-for-translation";
         const isWordsForTranslation = e.currentTarget.dataset.field === "words-for-translation";
         const isWord = e.currentTarget.className === "words-for-translation__word";
+        const isFlipStringForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation";
         if (isStringForTranslation && currentWord) {
-
-                setSelectedWord([...selectedWords, currentWord]);
-                setCurrentWord(null);
-        
-
+            
+            setSelectedWord([...selectedWords, currentWord]);
+            setCurrentWord(null);
+            
+            
         } else
-            if (isWordsForTranslation && currentWord) {
-
-                setAvailableWord([...availableWords, currentWord]);
+        if (isWordsForTranslation && currentWord) {
+            
+            setAvailableWord([...availableWords, currentWord]);
+            setTimeout(() => {
+                setAvailableWord([...availableWords, currentWord].sort(sortWords));
+                setCurrentWord(null);
+            }, 300);
+            
+        } else
+        if (isWord && currentWord && word && isFlipStringForTranslation) {
+            const currentIndex = selectedWords.indexOf(word);
+            const newSelectedWords = [...selectedWords]
+            setTimeout(() => {
+                newSelectedWords.splice(currentIndex, 0, currentWord)
+                setSelectedWord(newSelectedWords)
+                setCurrentWord(null);
+            }, 300)
+            
+        } else {
+            if (currentWord) {
+                setAvailableWord([...availableWords, currentWord].sort(sortWords));
                 setTimeout(() => {
                     setAvailableWord([...availableWords, currentWord].sort(sortWords));
                     setCurrentWord(null);
-                }, 300);
+                }, 300)
+            }else{
 
-            } else
-                if (isWord && currentWord && word) {
-                    if (e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation") {
-                        const currentIndex = selectedWords.indexOf(word);
-                        const newSelectedWords = [...selectedWords]
-                        setTimeout(() => {
-                            newSelectedWords.splice(currentIndex, 0, currentWord)
-                            setSelectedWord(newSelectedWords)
-                        }, 300)
-                        setCurrentWord(null);
-                    }
-
-
-                } else {
-                    if (currentWord) {
-                        setAvailableWord([...availableWords, currentWord].sort(sortWords));
-                        setTimeout(() => {
-                            setAvailableWord([...availableWords, currentWord].sort(sortWords));
-                            setCurrentWord(null);
-                        }, 300)
-                    }
-                }
+                console.log('qweq')
+            }
+        }
     }
     function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>) {
         e.currentTarget.style.boxShadow = "none"
     }
-
+    
     function sortWords(a: TWord, b: TWord) {
         return a.order - b.order
     }

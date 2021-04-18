@@ -1,4 +1,5 @@
 import FlipMove from "react-flip-move";
+import debounce from "../../utils/debounce";
 
 type TWordsListProps = {
     children?: JSX.Element[]
@@ -20,10 +21,10 @@ const WordsList = (props: TWordsListProps) => {
         <div
             data-field={props.dataset}
             className={props.className}
-            onDragOver={(event) => dragOverHandler(event)}
+            onDragOver={(event) =>debounce( dragOverHandler(event),1000)}
             onDrop={(event) => dragEndHandler(event)}
         >
-            <FlipMove data-flip={`flip-${props.dataset}`} className={'flip-' + props.className}>
+            <FlipMove  data-flip={`flip-${props.dataset}`} className={'flip-' + props.className}>
                 {props.children}
             </FlipMove>
         </div>
