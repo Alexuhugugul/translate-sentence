@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 type TWord = {
     id: number
     order: number
@@ -18,7 +20,7 @@ type TWordProps = {
     handlers: TWordhandlers
 }
 
-const Word = (props: TWordProps) => {
+const Word = forwardRef((props: TWordProps, ref) => {
 
     const { word, handlers } = props;
     const { dragStartHandler,
@@ -29,7 +31,9 @@ const Word = (props: TWordProps) => {
 
     return (
         <div
-            onDragStart={(event) => dragStartHandler(event)}
+            // @ts-ignore
+            ref={ref}
+            onDragStart={(event) => dragStartHandler(event, word)}
             onDragLeave={(event) => dragLeaveHandler(event)}
             onDragOver={(event) => dragOverHandler(event)}
             onDrag={(event) => dragHandler(event, word)}
@@ -39,6 +43,6 @@ const Word = (props: TWordProps) => {
             {word.text}
         </div>
     )
-}
+})
 
 export default Word

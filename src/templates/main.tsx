@@ -8,6 +8,7 @@ import Title from "../components/atoms/title";
 import Image from "../components/atoms/image";
 import Word from "../components/atoms/word";
 
+
 type TWord = {
     id: number,
     order: number,
@@ -29,10 +30,12 @@ type TMainPageProps = {
     availableWords: Array<TWord>
     selectedWords: Array<TWord>
     checkResult: Function
-    translationText:string
+    translationText: string
+    refTextError: React.RefObject<HTMLDivElement> 
 }
+
 const mainPage = (props: TMainPageProps) => {
-    const { image, handlers, availableWords, selectedWords, checkResult,translationText } = props
+    const { image, handlers, availableWords, selectedWords, checkResult, translationText, refTextError } = props
     return (
         <Fragment>
             <Header>
@@ -47,6 +50,7 @@ const mainPage = (props: TMainPageProps) => {
                     <WordsList
                         className="string-for-translation__list"
                         handlers={handlers}
+                        dataset="string-for-translation"
                     >
                         {selectedWords.map((selectedWord: TWord) =>
                             <Word
@@ -62,6 +66,7 @@ const mainPage = (props: TMainPageProps) => {
                     <WordsList
                         className="words-for-translation__words"
                         handlers={handlers}
+                        dataset="words-for-translation"
                     >
                         {availableWords.map((availableWord: TWord) =>
                             <Word
@@ -72,7 +77,7 @@ const mainPage = (props: TMainPageProps) => {
                         )}
                     </WordsList>
                 </WordsForTranslation>
-                <SubmitButton checkResult={checkResult} />
+                <SubmitButton refTextError={refTextError} checkResult={checkResult} />
             </main>
         </Fragment>
     )

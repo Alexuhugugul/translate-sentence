@@ -1,7 +1,10 @@
+import FlipMove from "react-flip-move";
+
 type TWordsListProps = {
     children?: JSX.Element[]
     className?: string
     handlers: TWordHandlers
+    dataset?: string
 }
 
 type TWordHandlers = {
@@ -15,11 +18,14 @@ const WordsList = (props: TWordsListProps) => {
 
     return (
         <div
+            data-field={props.dataset}
             className={props.className}
             onDragOver={(event) => dragOverHandler(event)}
             onDrop={(event) => dragEndHandler(event)}
         >
-            {props.children}
+            <FlipMove data-flip={`flip-${props.dataset}`} className={'flip-' + props.className}>
+                {props.children}
+            </FlipMove>
         </div>
     )
 }
