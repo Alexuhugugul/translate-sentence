@@ -1,5 +1,5 @@
-import Image from "../molecules/image";
 import styled from 'styled-components';
+import Image from "../molecules/image";
 import WordsList from "../molecules/wordsList";
 
 type TStringForTranslationProps = {
@@ -8,7 +8,9 @@ type TStringForTranslationProps = {
     image: any
 }
 
-const StringForTranslation = styled.div`
+const StringForTranslation = styled.div.attrs(() => ({
+    className: "string-for-translation"
+}))`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -23,7 +25,7 @@ const StringForTranslation = styled.div`
 const StringForTranslationComponent = (props: TStringForTranslationProps) => {
     const { image, handlers, selectedWords } = props
     return (
-        <StringForTranslation className="string-for-translation">
+        <StringForTranslation >
             <Image image={image} />
             <WordsList
                 className="string-for-translation__list"

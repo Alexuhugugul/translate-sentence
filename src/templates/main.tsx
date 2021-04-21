@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
+import styled from 'styled-components';
 import Header from "../components/organisms/header";
 import StringForTranslation from "../components/organisms/stringForTranslation";
 import WordsForTranslation from "../components/organisms/wordsForTranslation";
-import SubmitButton from "../components/molecules/submitButton";
-import styled from 'styled-components';
+import SubmitButton from "../components/organisms/submitButton";
 
 
 type TWord = {
