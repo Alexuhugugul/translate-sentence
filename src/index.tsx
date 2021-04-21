@@ -12,9 +12,9 @@ const Glodal = createGlobalStyle`
 }
 .page{
   max-width: 1200px;
-         margin-left: auto;
-        margin-right: auto;
-         height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
 }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",

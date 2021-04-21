@@ -1,8 +1,5 @@
 import styled from "styled-components";
-
-type TButton = {
-    checkResult: Function
-}
+import { TButton } from "../../types";
 
 const Button = styled.button`
   width: 150px;
@@ -18,12 +15,12 @@ const Button = styled.button`
   }
 `;
 
-const ButtonComponent = (props: TButton) => {
-    const { checkResult } = props;
+const ButtonComponent: React.FC<TButton> = (props) => {
+  const { checkResult } = props;
 
-    return (
-        <Button onClick={() => checkResult()}>Проверить</Button>
-    )
+  return (
+    <Button onClick={() => checkResult()}>Проверить</Button>
+  )
 }
 
 export default ButtonComponent

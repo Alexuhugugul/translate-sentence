@@ -1,9 +1,7 @@
 import Title from "../atoms/title";
 import styled from 'styled-components';
+import { THeaderProps } from "../../types";
 
-type THeaderProps = {
-  translationText: any
-}
 const Header = styled.header`
   height: 25%;
   text-align: center;
@@ -13,7 +11,7 @@ const Header = styled.header`
 }
 `;
 
-const HeaderComponent = (props: THeaderProps) => {
+const HeaderComponent: React.FC<THeaderProps> = (props) => {
   const { translationText } = props;
 
   return (

@@ -1,15 +1,11 @@
 import Header from "../molecules/header";
+import { THeaderProps } from "../../types";
 
-type THeaderProps = {
-  translationText: any
-}
-
-
-const HeaderBlock = (props: THeaderProps) => {
+const HeaderBlock: React.FC<THeaderProps> = (props) => {
   const { translationText } = props;
 
   return (
-    <Header translationText={translationText}/>
+    <Header translationText={translationText} />
   )
 }
 

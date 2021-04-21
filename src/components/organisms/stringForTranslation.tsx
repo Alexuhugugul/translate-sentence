@@ -1,12 +1,7 @@
 import styled from 'styled-components';
 import Image from "../molecules/image";
 import WordsList from "../molecules/wordsList";
-
-type TStringForTranslationProps = {
-    selectedWords: any
-    handlers: any
-    image: any
-}
+import { TStringForTranslationProps } from "../../types";
 
 const StringForTranslation = styled.div.attrs(() => ({
     className: "string-for-translation"
@@ -22,7 +17,7 @@ const StringForTranslation = styled.div.attrs(() => ({
   margin-right: auto;
 `;
 
-const StringForTranslationComponent = (props: TStringForTranslationProps) => {
+const StringForTranslationComponent: React.FC<TStringForTranslationProps> = (props) => {
     const { image, handlers, selectedWords } = props
     return (
         <StringForTranslation >

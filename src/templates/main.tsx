@@ -3,33 +3,8 @@ import styled from 'styled-components';
 import Header from "../components/organisms/header";
 import StringForTranslation from "../components/organisms/stringForTranslation";
 import WordsForTranslation from "../components/organisms/wordsForTranslation";
-import SubmitButton from "../components/organisms/submitButton";
+import { TMainPageProps } from "../types";
 
-
-type TWord = {
-    id: number,
-    order: number,
-    text: string,
-    translation: string
-}
-
-type TWordhandlers = {
-    dragStartHandler: Function
-    dragOverHandler: Function
-    dragHandler: Function
-    dragEndHandler: Function
-    dragLeaveHandler: Function
-}
-
-type TMainPageProps = {
-    image: string
-    handlers: TWordhandlers
-    availableWords: Array<TWord>
-    selectedWords: Array<TWord>
-    checkResult: Function
-    translationText: string
-    refTextError: React.RefObject<HTMLDivElement>
-}
 
 const Main = styled.main`
   height: 90%;
@@ -39,15 +14,14 @@ const Main = styled.main`
   align-items: center;
 `;
 
-const mainPage = (props: TMainPageProps) => {
+const mainPage: React.FC<TMainPageProps> = (props) => {
     const { image, handlers, availableWords, selectedWords, checkResult, translationText, refTextError } = props
     return (
         <Fragment>
             <Header translationText={translationText} />
             <Main>
-                <StringForTranslation selectedWords={selectedWords} handlers={handlers} image={image}/>
-                <WordsForTranslation handlers={handlers} availableWords={availableWords} />
-                <SubmitButton refTextError={refTextError} checkResult={checkResult} />
+                <StringForTranslation selectedWords={selectedWords} handlers={handlers} image={image} />
+                <WordsForTranslation handlers={handlers} availableWords={availableWords} refTextError={refTextError} checkResult={checkResult} />
             </Main>
         </Fragment>
     )

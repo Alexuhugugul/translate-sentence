@@ -1,8 +1,4 @@
-type TTitleProps = {
-    children?: string | Array<any>
-}
-
-const Title = (props: TTitleProps) => {
+const Title: React.FC = (props) => {
 
     return (
         <h1>{props.children}</h1>

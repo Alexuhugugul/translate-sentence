@@ -1,8 +1,6 @@
 import styled from "styled-components";
+import { TValidation } from "../../types";
 
-type TValidation = {
-    refTextError: React.RefObject<HTMLDivElement> 
-}
 
 const Validation = styled.div`
   transition: all 0.5s;
@@ -17,14 +15,14 @@ color: red;
   font-size: 20px;
 `;
 
-const ValidationComponent = (props: TValidation) => {
-    const { refTextError } = props;
-    
-    return (
-        <Validation ref={refTextError}>
-            <Text>Неверный перевод</Text>
-        </Validation>
-    )
+const ValidationComponent: React.FC<TValidation> = (props) => {
+  const { refTextError } = props;
+
+  return (
+    <Validation ref={refTextError}>
+      <Text>Неверный перевод</Text>
+    </Validation>
+  )
 }
 
 export default ValidationComponent

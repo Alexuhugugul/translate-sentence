@@ -1,8 +1,9 @@
 import Image from "../atoms/image";
+import { TImageProps } from "../../types";
 
-
-function ImageBlock(props: any) {
+const ImageBlock: React.FC<TImageProps> = (props) => {
     const { image } = props;
+    
     return (
         <Image image={image} />
     );

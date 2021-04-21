@@ -1,18 +1,16 @@
 import styled from "styled-components"
-
-type TImageProps = {
-    image: string,
-}
+import { TImageProps } from "../../types";
 
 const Image = styled.img`
   width: 200px;
   height: 200px;
 `;
 
-const ImageComponent = (props: TImageProps) => {
-    const { image } = props
+const ImageComponent: React.FC<TImageProps> = (props) => {
+    const { image } = props;
+    
     return (
-        <Image className="image" src={image} alt="speak"/>
+        <Image className="image" src={image} alt="speak" />
     )
 }
 

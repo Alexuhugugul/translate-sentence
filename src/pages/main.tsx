@@ -3,18 +3,10 @@ import Main from "../templates/main"
 import image from "../assets/speak.png";
 import deleteFromArray from '../utils/deleteFromArray';
 import insertBeforeItem from '../utils/insertBeforeItem';
-import 'talkify-tts';
+import { TWord, TOnDragStart, TOnDragOver, TOnDrag, TOnDragEnd, TOnDragLeave, TCheckResult, TTranslationText, TWordHandlers, TOnDragEndBody } from "../types";
 
-
-type TWord = {
-    id: number,
-    order: number,
-    text: string,
-    translation: string
-    validOrder: number
-};
-
-const translationText = "Создавать интерактивные пользовательские интерфейсы";
+const apiKey = '4cd7814f94b3404fa5959de9d7cc090c';
+const translationText: TTranslationText = "Создавать интерактивные пользовательские интерфейсы";
 const controlBoard = [
     { id: 2, order: 1, validOrder: 2, text: "interactive", translation: "интерактивные" },
     { id: 4, order: 4, validOrder: 4, text: "interfaces", translation: "интерфейсы" },
@@ -22,15 +14,17 @@ const controlBoard = [
     { id: 1, order: 2, validOrder: 1, text: "Create", translation: "Создавать" },
 ];
 
-const MainPage = () => {
+const MainPage: React.FC = () => {
 
     const [availableWords, setAvailableWords] = useState<TWord[]>([...controlBoard].sort(sortWords));
     const [selectedWords, setSelectedWords] = useState<TWord[]>([]);
     const [currentWord, setCurrentWord] = useState<TWord | null>(null);
-    const [fromField, setFromField] = useState<any>();
+    const [fromField, setFromField] = useState<string>();
     const refTextError = useRef<HTMLDivElement>(null);
+    const [speech, setSpeech] = useState<string>("");
 
-    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, word: TWord) {
+
+    const dragStartHandler: TOnDragStart = (e, word) => {
         const isFlipStringForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation";
         const isFlipWordsForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-words-for-translation";
 
@@ -46,42 +40,36 @@ const MainPage = () => {
         setCurrentWord(word);
     }
 
-    function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
+    const dragOverHandler: TOnDragOver = (e) => {
         e.preventDefault();
 
-        const isWordElement = e.currentTarget.className === "words-for-translation__word";
+        const isWordElement = e.currentTarget.classList.contains("words-for-translation__word");
 
         if (isWordElement) {
-            e.currentTarget.style.boxShadow = "0 4px 3px gray";
+            e.currentTarget.classList.add("active");
         }
     }
 
-    function dragHandler(e: React.DragEvent<HTMLDivElement>, word: TWord) {
+    const dragHandler: TOnDrag = (e) => {
         e.preventDefault();
 
         if (refTextError.current) {
             refTextError.current.style.opacity = "0";
         }
     }
-
-    function dragEndHandler(e: React.DragEvent<HTMLDivElement>, word?: TWord) {
+    const dragEndBodyHandler: TOnDragEndBody = (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        e.currentTarget.style.boxShadow = "none";
 
         if (!currentWord) {
             return
         }
-
         const isStringForTranslation = e.currentTarget.dataset.field === "string-for-translation";
         const isWordsForTranslation = e.currentTarget.dataset.field === "words-for-translation";
-        const isFlipStringForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation";
         const currentSelcetedWordIndex = selectedWords.indexOf(currentWord);
         const currentAvailableWordIndex = availableWords.indexOf(currentWord);
         let newSelectedWords = [...selectedWords];
         let newAvailableWords = [...availableWords];
-
 
         if (fromField === "isFlipStringForTranslation" && isWordsForTranslation) {
 
@@ -108,33 +96,51 @@ const MainPage = () => {
                 setCurrentWord(null);
 
             }
-            else
-                if (isFlipStringForTranslation && word && fromField === "isFlipStringForTranslation") {
+    }
+    const dragEndHandler: TOnDragEnd = (e, word) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-                    const wordIndex = selectedWords.indexOf(word);
+        e.currentTarget.classList.remove("active")
 
-                    newSelectedWords = deleteFromArray(newSelectedWords, currentSelcetedWordIndex);
-                    newSelectedWords = insertBeforeItem(newSelectedWords, wordIndex, currentWord);
+        if (!currentWord) {
+            return
+        }
 
-                    setSelectedWords(newSelectedWords);
+        const isFlipStringForTranslation = e.currentTarget.parentElement?.dataset.flip === "flip-string-for-translation";
+        const currentSelcetedWordIndex = selectedWords.indexOf(currentWord);
+        const currentAvailableWordIndex = availableWords.indexOf(currentWord);
+        let newSelectedWords = [...selectedWords];
+        let newAvailableWords = [...availableWords];
 
-                }
-                else
-                    if (isFlipStringForTranslation && word && fromField === "isFlipWordsForTranslation") {
 
-                        const wordIndex = selectedWords.indexOf(word);
 
-                        newAvailableWords = deleteFromArray(newAvailableWords, currentAvailableWordIndex);
-                        newSelectedWords = insertBeforeItem(newSelectedWords, wordIndex, currentWord);
+        if (isFlipStringForTranslation && word && fromField === "isFlipStringForTranslation") {
 
-                        setAvailableWords(newAvailableWords);
-                        setSelectedWords(newSelectedWords);
-                    }
+            const wordIndex = selectedWords.indexOf(word);
+
+            newSelectedWords = deleteFromArray(newSelectedWords, currentSelcetedWordIndex);
+            newSelectedWords = insertBeforeItem(newSelectedWords, wordIndex, currentWord);
+
+            setSelectedWords(newSelectedWords);
+
+        }
+        else
+            if (isFlipStringForTranslation && word && fromField === "isFlipWordsForTranslation") {
+
+                const wordIndex = selectedWords.indexOf(word);
+
+                newAvailableWords = deleteFromArray(newAvailableWords, currentAvailableWordIndex);
+                newSelectedWords = insertBeforeItem(newSelectedWords, wordIndex, currentWord);
+
+                setAvailableWords(newAvailableWords);
+                setSelectedWords(newSelectedWords);
+            }
 
     }
 
-    function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>) {
-        e.currentTarget.style.boxShadow = "none"
+    const dragLeaveHandler: TOnDragLeave = (e) => {
+        e.currentTarget.classList.remove("active")
     }
 
     function sortWords(a: TWord, b: TWord) {
@@ -145,36 +151,36 @@ const MainPage = () => {
         return a.validOrder - b.validOrder
     }
 
-    function checkResult() {
+    const checkResult: TCheckResult = () => {
         const resultString = selectedWords.map(word => word.translation).join(" ");
         const sortedControlBoard = [...controlBoard].sort(sortByValidOrder);
         const controlString = sortedControlBoard.map(word => word.translation).join(" ");
 
         if (resultString === controlString) {
-            // @ts-ignore
-            const player = new window.talkify.TtsPlayer();
             const textForVoice = sortedControlBoard.map(word => word.text).join(" ");
-
-            player.playText(textForVoice);
+            const audioSrc = `http://api.voicerss.org/?key=${apiKey}&hl=en-us&src=${textForVoice}`;
+            
+            setSpeech(audioSrc);
         } else
             if (refTextError.current) {
                 refTextError.current.style.opacity = "1";
             }
     }
 
-    const handlers = {
+    const handlers: TWordHandlers = {
         dragStartHandler,
         dragOverHandler,
         dragHandler,
         dragEndHandler,
-        dragLeaveHandler
+        dragLeaveHandler,
+        dragEndBodyHandler
     }
 
     return (
         <div
             className="page"
             onDragOver={(event) => dragOverHandler(event)}
-            onDrop={(event) => dragEndHandler(event)}
+            onDrop={(event) => dragEndBodyHandler(event)}
         >
             <Main
                 image={image}
@@ -184,6 +190,8 @@ const MainPage = () => {
                 checkResult={checkResult}
                 translationText={translationText}
                 refTextError={refTextError} />
+            { speech && <audio autoPlay src={speech}></audio>}
+
         </div>
     )
 }

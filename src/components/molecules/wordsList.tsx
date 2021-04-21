@@ -1,28 +1,7 @@
 import FlipMove from "react-flip-move";
 import styled, { css } from "styled-components";
-import debounce from "../../utils/debounce";
 import Word from "../atoms/word";
-
-type TWordsListProps = {
-    className?: string
-    handlers: TWordHandlers
-    dataset?: string
-    listWords: any
-}
-type TWord = {
-    id: number,
-    order: number,
-    text: string,
-    translation: string
-};
-
-type TWordHandlers = {
-    dragStartHandler: Function
-    dragOverHandler: Function
-    dragHandler: Function
-    dragEndHandler: Function
-    dragLeaveHandler: Function
-}
+import { TWordsListProps } from "../../types";
 
 const WordsList = styled.div`
   border: 3px solid rgba(0, 0, 0, 0.979);
@@ -56,28 +35,28 @@ const FlipMoveStyle = styled(FlipMove)`
 `;
 
 
-const WordsListComponent = (props: TWordsListProps) => {
-    const { handlers, listWords } = props;
-    const { dragOverHandler, dragEndHandler } = handlers;
+const WordsListComponent: React.FC<TWordsListProps> = (props) => {
+  const { handlers, listWords, dataset, className } = props;
+  const { dragOverHandler, dragEndBodyHandler } = handlers;
 
-    return (
-        <WordsList
-            data-field={props.dataset}
-            className={props.className}
-            onDragOver={(event) => debounce(dragOverHandler(event), 1000)}
-            onDrop={(event) => dragEndHandler(event)}
-        >
-            <FlipMoveStyle data-flip={`flip-${props.dataset}`} className={'flip-' + props.className}>
-                {listWords.map((selectedWord: TWord) =>
-                    <Word
-                        key={selectedWord.id}
-                        handlers={handlers}
-                        word={selectedWord}
-                    />
-                )}
-            </FlipMoveStyle>
-        </WordsList>
-    )
+  return (
+    <WordsList
+      data-field={dataset}
+      className={className}
+      onDragOver={(event) => dragOverHandler(event)}
+      onDrop={(event) => dragEndBodyHandler(event)}
+    >
+      <FlipMoveStyle data-flip={`flip-${dataset}`} className={'flip-' + props.className}>
+        {listWords.map((selectedWord) =>
+          <Word
+            key={selectedWord.id}
+            handlers={handlers}
+            word={selectedWord}
+          />
+        )}
+      </FlipMoveStyle>
+    </WordsList>
+  )
 }
 
 export default WordsListComponent

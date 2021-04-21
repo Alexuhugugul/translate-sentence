@@ -1,26 +1,6 @@
 import { forwardRef } from "react";
 import styled from "styled-components";
-import debounce from "../../utils/debounce"
-
-type TWord = {
-    id: number
-    order: number
-    text: string
-    translation: string
-}
-
-type TWordhandlers = {
-    dragStartHandler: Function
-    dragOverHandler: Function
-    dragHandler: Function
-    dragEndHandler: Function
-    dragLeaveHandler: Function
-}
-
-type TWordProps = {
-    word: TWord
-    handlers: TWordhandlers
-}
+import { TWordProps } from "../../types";
 
 const Word = styled.div.attrs(() => ({
     className: "words-for-translation__word"
@@ -30,9 +10,12 @@ const Word = styled.div.attrs(() => ({
   border-radius: 5px;
   cursor: grab;
   margin:5px;
+  &.active{
+    box-shadow :0 4px 3px gray;
+  }
 `
 
-const WordComponent = forwardRef((props: TWordProps, ref) => {
+const WordComponent = forwardRef<HTMLDivElement, TWordProps>((props, ref) => {
 
     const { word, handlers } = props;
     const { dragStartHandler,
@@ -43,13 +26,12 @@ const WordComponent = forwardRef((props: TWordProps, ref) => {
 
     return (
         <Word
-            // @ts-ignore
             ref={ref}
-            onDragStart={(event) => debounce(dragStartHandler(event, word), 1000)}
-            onDragLeave={(event) => debounce(dragLeaveHandler(event), 1000)}
-            onDragOver={(event) => debounce(dragOverHandler(event), 1000)}
-            onDrag={(event) => debounce(dragHandler(event, word), 1000)}
-            onDrop={(event) => debounce(dragEndHandler(event, word), 1000)}
+            onDragStart={(event) => dragStartHandler(event, word)}
+            onDragLeave={(event) => dragLeaveHandler(event)}
+            onDragOver={(event) => dragOverHandler(event)}
+            onDrag={(event) => dragHandler(event, word)}
+            onDrop={(event) => dragEndHandler(event, word)}
             draggable={true}
         >
             {word.text}
