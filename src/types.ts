@@ -3,7 +3,6 @@ export type TOnDragOver = (event: React.DragEvent<HTMLDivElement>) => void;
 export type TOnDrag = (event: React.DragEvent<HTMLDivElement>, word: TWord) => void;
 export type TOnDragEnd = (event: React.DragEvent<HTMLDivElement>, word: TWord) => void;
 export type TOnDragEndBody = (event: React.DragEvent<HTMLDivElement>) => void;
-export type TOnDragLeave = (event: React.DragEvent<HTMLDivElement>) => void;
 export type TCheckResult = () => void;
 export type TTranslationText = string;
 type TImage = string;
@@ -21,10 +20,8 @@ export type TWordHandlers = {
     dragOverHandler: TOnDragOver
     dragHandler: TOnDrag
     dragEndHandler: TOnDragEnd
-    dragLeaveHandler: TOnDragLeave
     dragEndBodyHandler:TOnDragEndBody
 };
-
 
 export type TMainPageProps = {
     image: TImage

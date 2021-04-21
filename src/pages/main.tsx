@@ -3,7 +3,7 @@ import Main from "../templates/main"
 import image from "../assets/speak.png";
 import deleteFromArray from '../utils/deleteFromArray';
 import insertBeforeItem from '../utils/insertBeforeItem';
-import { TWord, TOnDragStart, TOnDragOver, TOnDrag, TOnDragEnd, TOnDragLeave, TCheckResult, TTranslationText, TWordHandlers, TOnDragEndBody } from "../types";
+import { TWord, TOnDragStart, TOnDragOver, TOnDrag, TOnDragEnd, TCheckResult, TTranslationText, TWordHandlers, TOnDragEndBody } from "../types";
 
 const apiKey = '4cd7814f94b3404fa5959de9d7cc090c';
 const translationText: TTranslationText = "Создавать интерактивные пользовательские интерфейсы";
@@ -42,21 +42,16 @@ const MainPage: React.FC = () => {
 
     const dragOverHandler: TOnDragOver = (e) => {
         e.preventDefault();
-
-        const isWordElement = e.currentTarget.classList.contains("words-for-translation__word");
-
-        if (isWordElement) {
-            e.currentTarget.classList.add("active");
-        }
     }
 
     const dragHandler: TOnDrag = (e) => {
         e.preventDefault();
 
         if (refTextError.current) {
-            refTextError.current.style.opacity = "0";
+            refTextError.current.classList.remove("active")
         }
     }
+    
     const dragEndBodyHandler: TOnDragEndBody = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -64,6 +59,7 @@ const MainPage: React.FC = () => {
         if (!currentWord) {
             return
         }
+
         const isStringForTranslation = e.currentTarget.dataset.field === "string-for-translation";
         const isWordsForTranslation = e.currentTarget.dataset.field === "words-for-translation";
         const currentSelcetedWordIndex = selectedWords.indexOf(currentWord);
@@ -101,8 +97,6 @@ const MainPage: React.FC = () => {
         e.preventDefault();
         e.stopPropagation();
 
-        e.currentTarget.classList.remove("active")
-
         if (!currentWord) {
             return
         }
@@ -139,9 +133,6 @@ const MainPage: React.FC = () => {
 
     }
 
-    const dragLeaveHandler: TOnDragLeave = (e) => {
-        e.currentTarget.classList.remove("active")
-    }
 
     function sortWords(a: TWord, b: TWord) {
         return a.order - b.order
@@ -159,11 +150,11 @@ const MainPage: React.FC = () => {
         if (resultString === controlString) {
             const textForVoice = sortedControlBoard.map(word => word.text).join(" ");
             const audioSrc = `http://api.voicerss.org/?key=${apiKey}&hl=en-us&src=${textForVoice}`;
-            
+
             setSpeech(audioSrc);
         } else
             if (refTextError.current) {
-                refTextError.current.style.opacity = "1";
+                refTextError.current.classList.add("active")
             }
     }
 
@@ -172,7 +163,6 @@ const MainPage: React.FC = () => {
         dragOverHandler,
         dragHandler,
         dragEndHandler,
-        dragLeaveHandler,
         dragEndBodyHandler
     }
 

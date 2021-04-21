@@ -6,11 +6,13 @@ const Validation = styled.div`
   transition: all 0.5s;
   opacity: 0;
   margin-top: 20px;
-
+  &.active{
+  opacity: 1;
+}
 `;
 
 const Text = styled.span`
-color: red;
+  color: red;
   font-weight: bold;
   font-size: 20px;
 `;

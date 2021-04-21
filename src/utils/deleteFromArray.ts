@@ -1,4 +1,4 @@
-export default function deleteFromArray (array: Array<any>, index: number) {
+export default function deleteFromArray<P> (array: Array<P>, index: number) {
     const tmpArray = [...array];
 
     tmpArray.splice(index, 1);

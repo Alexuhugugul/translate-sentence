@@ -1,10 +1,8 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import styled from "styled-components";
 import { TWordProps } from "../../types";
 
-const Word = styled.div.attrs(() => ({
-    className: "words-for-translation__word"
-}))`
+const Word = styled.div`
   border: 1px solid black;
   padding: 3px;
   border-radius: 5px;
@@ -21,17 +19,29 @@ const WordComponent = forwardRef<HTMLDivElement, TWordProps>((props, ref) => {
     const { dragStartHandler,
         dragOverHandler,
         dragHandler,
-        dragEndHandler,
-        dragLeaveHandler } = handlers;
+        dragEndHandler } = handlers;
 
+    const [isHoverWord, setIsHoverWord] = useState<boolean>(false);
+
+    function dragOutElement(event: React.DragEvent<HTMLDivElement>) {
+        setIsHoverWord(false);
+        dragEndHandler(event, word);
+    }
+
+    function dragInElement(event: React.DragEvent<HTMLDivElement>) {
+        setIsHoverWord(true);
+        dragOverHandler(event);
+    }
+    
     return (
         <Word
+            className={isHoverWord ? 'active words-for-translation__word' : 'words-for-translation__word'}
             ref={ref}
             onDragStart={(event) => dragStartHandler(event, word)}
-            onDragLeave={(event) => dragLeaveHandler(event)}
-            onDragOver={(event) => dragOverHandler(event)}
+            onDragLeave={(event) => dragOutElement(event)}
+            onDragOver={(event) => dragInElement(event)}
             onDrag={(event) => dragHandler(event, word)}
-            onDrop={(event) => dragEndHandler(event, word)}
+            onDrop={(event) => dragOutElement(event)}
             draggable={true}
         >
             {word.text}

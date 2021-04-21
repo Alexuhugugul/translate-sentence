@@ -1,4 +1,4 @@
-export default function insertBeforeItem (array: Array<any>, itemIndex: number, insertedItem: any) {
+export default function insertBeforeItem<P> (array: Array<P>, itemIndex: number, insertedItem: P) {
     const tmpArray = [...array];
 
     tmpArray.splice(itemIndex, 0, insertedItem);
