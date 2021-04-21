@@ -2,11 +2,8 @@ import React, { Fragment } from 'react';
 import Header from "../components/organisms/header";
 import StringForTranslation from "../components/organisms/stringForTranslation";
 import WordsForTranslation from "../components/organisms/wordsForTranslation";
-import WordsList from "../components/molecules/wordsList";
 import SubmitButton from "../components/molecules/submitButton";
-import Title from "../components/atoms/title";
-import Image from "../components/atoms/image";
-import Word from "../components/atoms/word";
+import styled from 'styled-components';
 
 
 type TWord = {
@@ -31,54 +28,27 @@ type TMainPageProps = {
     selectedWords: Array<TWord>
     checkResult: Function
     translationText: string
-    refTextError: React.RefObject<HTMLDivElement> 
+    refTextError: React.RefObject<HTMLDivElement>
 }
+
+const Main = styled.main`
+  height: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const mainPage = (props: TMainPageProps) => {
     const { image, handlers, availableWords, selectedWords, checkResult, translationText, refTextError } = props
     return (
         <Fragment>
-            <Header>
-                <Title>Переведите данное предложение:<br/>{translationText}</Title>
-            </Header>
-            <main className="main-page__body">
-                <StringForTranslation
-                    imageComponent={
-                        <Image image={image} />
-                    }
-                >
-                    <WordsList
-                        className="string-for-translation__list"
-                        handlers={handlers}
-                        dataset="string-for-translation"
-                    >
-                        {selectedWords.map((selectedWord: TWord) =>
-                            <Word
-                                key={selectedWord.id}
-                                handlers={handlers}
-                                word={selectedWord}
-                            />
-                        )}
-                    </WordsList>
-                </StringForTranslation>
-
-                <WordsForTranslation>
-                    <WordsList
-                        className="words-for-translation__words"
-                        handlers={handlers}
-                        dataset="words-for-translation"
-                    >
-                        {availableWords.map((availableWord: TWord) =>
-                            <Word
-                                key={availableWord.id}
-                                handlers={handlers}
-                                word={availableWord}
-                            />
-                        )}
-                    </WordsList>
-                </WordsForTranslation>
+            <Header translationText={translationText} />
+            <Main>
+                <StringForTranslation selectedWords={selectedWords} handlers={handlers} image={image}/>
+                <WordsForTranslation handlers={handlers} availableWords={availableWords} />
                 <SubmitButton refTextError={refTextError} checkResult={checkResult} />
-            </main>
+            </Main>
         </Fragment>
     )
 }

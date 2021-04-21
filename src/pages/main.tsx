@@ -57,7 +57,7 @@ const MainPage = () => {
 
     function dragHandler(e: React.DragEvent<HTMLDivElement>, word: TWord) {
         e.preventDefault();
-    
+
         if (refTextError.current) {
             refTextError.current.style.opacity = "0";
         }
@@ -170,7 +170,8 @@ const MainPage = () => {
     }
 
     return (
-        <div className="main-page"
+        <div
+            className="page"
             onDragOver={(event) => dragOverHandler(event)}
             onDrop={(event) => dragEndHandler(event)}
         >

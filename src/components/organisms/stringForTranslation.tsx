@@ -1,17 +1,39 @@
+import Image from "../molecules/image";
+import styled from 'styled-components';
+import WordsList from "../molecules/wordsList";
+
 type TStringForTranslationProps = {
-    imageComponent: JSX.Element
-    children: JSX.Element
+    selectedWords: any
+    handlers: any
+    image: any
 }
 
-const StringForTranslation = (props: TStringForTranslationProps) => {
+const StringForTranslation = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 600px;
+  height: 200px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const StringForTranslationComponent = (props: TStringForTranslationProps) => {
+    const { image, handlers, selectedWords } = props
     return (
-        <div className="string-for-translation">
-            <div className="string-for-translation__image">
-                {props.imageComponent}
-            </div>
-            {props.children}
-        </div>
+        <StringForTranslation className="string-for-translation">
+            <Image image={image} />
+            <WordsList
+                className="string-for-translation__list"
+                handlers={handlers}
+                dataset="string-for-translation"
+                listWords={selectedWords}
+            />
+
+        </StringForTranslation>
     )
 }
 
-export default StringForTranslation
+export default StringForTranslationComponent

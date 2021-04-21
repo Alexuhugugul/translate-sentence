@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import Button from "../atoms/button";
 import Validation from "../atoms/validation";
 
@@ -6,15 +7,24 @@ type TSubmitFrom = {
     refTextError:React.RefObject<HTMLDivElement> 
 }
 
-const SubmitButton = (props: TSubmitFrom) => {
+const SubmitButton = styled.div`
+  margin-bottom: 20%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SubmitButtonComponent = (props: TSubmitFrom) => {
     const { checkResult, refTextError } = props;
 
     return (
-        <div className="submit-button">
+        <SubmitButton>
             <Button checkResult={checkResult} />
             <Validation refTextError={refTextError} />
-        </div>
+        </SubmitButton>
     )
 }
 
-export default SubmitButton
+export default SubmitButtonComponent

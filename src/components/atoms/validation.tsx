@@ -1,14 +1,30 @@
+import styled from "styled-components";
 
 type TValidation = {
     refTextError: React.RefObject<HTMLDivElement> 
 }
-const Validation = (props: TValidation) => {
+
+const Validation = styled.div`
+  transition: all 0.5s;
+  opacity: 0;
+  margin-top: 20px;
+
+`;
+
+const Text = styled.span`
+color: red;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const ValidationComponent = (props: TValidation) => {
     const { refTextError } = props;
+    
     return (
-        <div className="submit-button__validation" ref={refTextError}>
-            <span>Неверный перевод</span>
-        </div>
+        <Validation ref={refTextError}>
+            <Text>Неверный перевод</Text>
+        </Validation>
     )
 }
 
-export default Validation
+export default ValidationComponent

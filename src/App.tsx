@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
 import Main from "./pages/main";
+
 
 // @ts-ignore
 window.talkify.config.remoteService.host = 'https://talkify.net';
