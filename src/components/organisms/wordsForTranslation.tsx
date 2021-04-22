@@ -13,7 +13,7 @@ const WordsForTranslation = styled.div.attrs(() => ({
 `;
 
 const WordsForTranslationComponent: React.FC<TWordsForTranslationProps> = (props) => {
-    const { handlers, availableWords, checkResult, refTextError } = props
+    const { handlers, availableWords, checkResult, isTextError } = props
     return (
         <Fragment>
             <WordsForTranslation>
@@ -24,7 +24,7 @@ const WordsForTranslationComponent: React.FC<TWordsForTranslationProps> = (props
                     listWords={availableWords}
                 />
             </WordsForTranslation>
-            <SubmitButton checkResult={checkResult} refTextError={refTextError} />
+            <SubmitButton checkResult={checkResult} isTextError={isTextError} />
         </Fragment>
 
     )

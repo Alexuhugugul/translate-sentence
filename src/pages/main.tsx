@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {  useState } from 'react';
 import Main from "../templates/main"
 import image from "../assets/speak.png";
 import deleteFromArray from '../utils/deleteFromArray';
@@ -20,7 +20,7 @@ const MainPage: React.FC = () => {
     const [selectedWords, setSelectedWords] = useState<TWord[]>([]);
     const [currentWord, setCurrentWord] = useState<TWord | null>(null);
     const [fromField, setFromField] = useState<string>();
-    const refTextError = useRef<HTMLDivElement>(null);
+    const [isTextError, setIsTextError] = useState<boolean>(false);
     const [speech, setSpeech] = useState<string>("");
 
 
@@ -47,11 +47,11 @@ const MainPage: React.FC = () => {
     const dragHandler: TOnDrag = (e) => {
         e.preventDefault();
 
-        if (refTextError.current) {
-            refTextError.current.classList.remove("active")
+        if (isTextError) {
+            setIsTextError(false);
         }
     }
-    
+
     const dragEndBodyHandler: TOnDragEndBody = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -153,8 +153,8 @@ const MainPage: React.FC = () => {
 
             setSpeech(audioSrc);
         } else
-            if (refTextError.current) {
-                refTextError.current.classList.add("active")
+            if (!isTextError) {
+                setIsTextError(true);
             }
     }
 
@@ -179,7 +179,7 @@ const MainPage: React.FC = () => {
                 selectedWords={selectedWords}
                 checkResult={checkResult}
                 translationText={translationText}
-                refTextError={refTextError} />
+                isTextError={isTextError} />
             { speech && <audio autoPlay src={speech}></audio>}
 
         </div>

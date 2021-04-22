@@ -18,10 +18,10 @@ const Text = styled.span`
 `;
 
 const ValidationComponent: React.FC<TValidation> = (props) => {
-  const { refTextError } = props;
+  const { isTextError } = props;
 
   return (
-    <Validation ref={refTextError}>
+    <Validation className={isTextError ? 'active' : ''}>
       <Text>Неверный перевод</Text>
     </Validation>
   )

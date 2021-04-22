@@ -13,12 +13,12 @@ const SubmitButton = styled.div`
 `;
 
 const SubmitButtonComponent: React.FC<TSubmitFrom> = (props) => {
-    const { checkResult, refTextError } = props;
+    const { checkResult, isTextError } = props;
 
     return (
         <SubmitButton>
             <Button checkResult={checkResult} />
-            <Validation refTextError={refTextError} />
+            <Validation isTextError={isTextError} />
         </SubmitButton>
     )
 }

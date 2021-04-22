@@ -15,13 +15,13 @@ const Main = styled.main`
 `;
 
 const mainPage: React.FC<TMainPageProps> = (props) => {
-    const { image, handlers, availableWords, selectedWords, checkResult, translationText, refTextError } = props
+    const { image, handlers, availableWords, selectedWords, checkResult, translationText, isTextError } = props
     return (
         <Fragment>
             <Header translationText={translationText} />
             <Main>
                 <StringForTranslation selectedWords={selectedWords} handlers={handlers} image={image} />
-                <WordsForTranslation handlers={handlers} availableWords={availableWords} refTextError={refTextError} checkResult={checkResult} />
+                <WordsForTranslation handlers={handlers} availableWords={availableWords} isTextError={isTextError} checkResult={checkResult} />
             </Main>
         </Fragment>
     )

@@ -30,7 +30,7 @@ export type TMainPageProps = {
     selectedWords: Array<TWord>
     checkResult: TCheckResult
     translationText: TTranslationText
-    refTextError: React.RefObject<HTMLDivElement>
+    isTextError: boolean
 };
 
 export type TWordsListProps = {
@@ -44,12 +44,12 @@ export type TWordsForTranslationProps = {
     availableWords: Array<TWord>
     handlers: TWordHandlers
     checkResult:TCheckResult
-    refTextError: React.RefObject<HTMLDivElement>
+    isTextError: boolean
 };
 
 export type TSubmitFrom = {
     checkResult: TCheckResult
-    refTextError: React.RefObject<HTMLDivElement>
+    isTextError: boolean
 };
 
 export type TStringForTranslationProps = {
@@ -59,7 +59,7 @@ export type TStringForTranslationProps = {
 };
 
 export type TValidation = {
-    refTextError: React.RefObject<HTMLDivElement>
+    isTextError: boolean
 };
 
 export type THeaderProps = {
